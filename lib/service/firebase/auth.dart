@@ -46,6 +46,9 @@ class Auth implements AuthBase {
 
   @override
   Future<void> signOut() async {
+    if (currentUser!.isAnonymous) {
+      await currentUser!.delete();
+    }
     await _firebaseAuth.signOut();
   }
 

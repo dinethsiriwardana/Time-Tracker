@@ -4,8 +4,10 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/customcolor.dart';
+import 'package:timetracker/service/firebase/auth.dart';
 
 class CustomHearder extends StatefulWidget {
   const CustomHearder({Key? key}) : super(key: key);
@@ -153,7 +155,8 @@ class MenuItems {
         //Do something
         break;
       case MenuItems.logout:
-        //Do something
+        final auth = Provider.of<AuthBase>(context, listen: false);
+        auth.signOut();
         break;
     }
   }
