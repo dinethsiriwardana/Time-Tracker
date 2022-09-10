@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _signInAnonymously() async {
+  Future<void> signInAnonymously() async {
     final auth = Provider.of<AuthBase>(context, listen: false);
 
     try {
@@ -285,7 +285,9 @@ class _LoginPageState extends State<LoginPage> {
                 icon: FaIcon(FontAwesomeIcons.google, size: 10.w, color: white),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  signInAnonymously();
+                },
                 icon: FaIcon(FontAwesomeIcons.userClock,
                     size: 10.w, color: white),
               ),
