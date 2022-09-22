@@ -374,6 +374,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "quickalert",
+      "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/quickalert-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "responsive_sizer",
       "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/responsive_sizer-3.1.0",
       "packageUri": "lib/",
@@ -464,7 +470,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-09-10T02:55:34.885523Z",
+  "generated": "2022-09-20T15:38:29.225651Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }

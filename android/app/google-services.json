@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:491494250142:android:dbde6c93e7bf13275bcd8f",
         "android_client_info": {
-          "package_name": "com.example.timetracker"
+          "package_name": "com.sstudio.timetracker"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "491494250142-lv3cc6r6gh20blqchsnrlc75d9l9tuem.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.timetracker"
+                "bundle_id": "com.sstudio.timetracker"
               }
             }
           ]

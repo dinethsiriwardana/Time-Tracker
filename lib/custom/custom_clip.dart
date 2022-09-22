@@ -11,7 +11,7 @@ class CustomClipperhead extends StatelessWidget {
       child: Container(
         height: 150,
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color(0xFF007BDD),
               spreadRadius: 100,

@@ -1,5 +1,5 @@
 name: timetracker
-description: A new Flutter project.
+description: Track your Time.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+1
+version: 1.3.0+1
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -39,6 +39,7 @@ dependencies:
   firebase_auth: ^3.5.1
   firebase_core: ^1.20.0
   firebase_storage: ^10.3.3
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   font_awesome_flutter: ^10.1.0
   google_fonts: ^3.0.1
@@ -46,7 +47,7 @@ dependencies:
   numberpicker: ^2.1.1
   provider: ^6.0.3
   responsive_sizer: ^3.1.0
-  flutter_launcher_icons: ^0.10.0
+  quickalert: ^1.0.0
 
 dev_dependencies:
   flutter_test:

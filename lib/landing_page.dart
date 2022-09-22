@@ -5,6 +5,7 @@ import 'package:timetracker/screen/loading_screen.dart';
 import 'package:timetracker/screen/login_screen.dart';
 import 'package:timetracker/screen/target_screen_stream.dart';
 import 'package:timetracker/service/firebase/auth.dart';
+import 'package:timetracker/service/firebase/database.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -26,9 +27,14 @@ class LandingPage extends StatelessWidget {
             return const LoginPage();
           }
           // print(user.uid);
-          return const TargetScreenStream();
+          return Provider<Database>(
+            create: (_) => FirestoreDatabase(user: user.uid),
+            child: TargetScreenStream(),
+          );
         }
-        return const LoadingScreen();
+        return const LoadingScreen(
+          iserror: false,
+        );
       },
     );
   }

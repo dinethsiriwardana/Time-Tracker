@@ -6,15 +6,18 @@ import 'package:timetracker/service/model/data_model.dart';
 import 'package:timetracker/service/model/datetimemodel.dart';
 
 abstract class Database {
-  Future<void> writeData(String datatime, writeTime wDataModel);
-  Stream<List<writeTime>> readDataStream();
+  Future<void> writeData(String datatime, WriteTime wDataModel);
+  Stream<List<WriteTime>> readDataStream();
+  Future<void> deleteaccount();
 }
 
 // /data/student_details/2010/
 class FirestoreDatabase implements Database {
-  final user = FirebaseAuth.instance.currentUser!.uid;
+  FirestoreDatabase({required this.user}) : assert(user != null);
+  final String user;
 
-  Future<void> writeData(String datatime, writeTime wDataModel) =>
+  @override
+  Future<void> writeData(String datatime, WriteTime wDataModel) =>
       _writedataCommon(
         path: APIPath.wdatapath(datatime,
             user), // ! path create using firebase/service/api_path.dart
@@ -30,19 +33,38 @@ class FirestoreDatabase implements Database {
     await reference.set(data);
   }
 
-  Stream<List<writeTime>> readDataStream() {
+  @override
+  Future<void> deleteaccount() async {
+    try {
+      FirebaseFirestore.instance
+          .collection('users/$user/2022')
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.docs) {
+          ds.reference.delete();
+        }
+      });
+      print("Delet from the database");
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  Stream<List<WriteTime>> readDataStream() {
     final monthData = dateTimeNow('yyyyMMdd');
-    print("Dota is -  $monthData (Read From ReadDataStream)");
+    // print("Dota is -  $monthData (Read From ReadDataStream)");
+    print("Read Data to $user in date  $monthData");
     final path = APIPath.rdatapath(user);
     final reference = FirebaseFirestore.instance
         .collection(path)
         .where('docid', isEqualTo: monthData);
     // .doc(monthData) //CollectionReference<Map<String, dynamic>> / CollectionReference<Map<String, dynamic>>
-    ;
+
     final snapshots = reference
         .snapshots(); //Stream<QuerySnapshot<Map<String, dynamic>>> snapshots / Stream<DocumentSnapshot<Map<String, dynamic>>>
     return snapshots.map((snapshot) => snapshot.docs
-        .map((snapshot) => writeTime.fromMap(snapshot.data()))
+        .map((snapshot) => WriteTime.fromMap(snapshot.data()))
         .toList());
   }
 }

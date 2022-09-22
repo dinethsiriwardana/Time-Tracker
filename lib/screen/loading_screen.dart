@@ -1,13 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/customcolor.dart';
 
 class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
-
+  const LoadingScreen({Key? key, required this.iserror, this.errexception})
+      : super(key: key);
+  final bool iserror;
+  final String? errexception;
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();
 }
@@ -36,7 +39,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       width: 100.w,
       height: 100.h,
       decoration: BoxDecoration(
@@ -44,7 +47,7 @@ class _LoadingScreenState extends State<LoadingScreen>
         center: const Alignment(-1.5, -1), // near the top right
         radius: 1.8,
         colors: [
-          Color(0xFF00EC97),
+          const Color(0xFF00EC97),
           greenColor,
         ],
       )),

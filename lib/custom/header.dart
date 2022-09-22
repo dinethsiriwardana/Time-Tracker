@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:timetracker/service/firebase/auth.dart';
+import 'package:timetracker/service/firebase/database.dart';
 
 class CustomHearder extends StatefulWidget {
   const CustomHearder({Key? key}) : super(key: key);
@@ -20,15 +22,16 @@ class _CustomHearderState extends State<CustomHearder> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       height: 100,
       width: 100.w,
       decoration: BoxDecoration(
-          color: white.withOpacity(0.2),
-          borderRadius: new BorderRadius.only(
-            bottomLeft: const Radius.circular(20.0),
-            bottomRight: const Radius.circular(20.0),
-          )),
+        color: white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20.0
+            // bottomLeft: Radius.circular(20.0),
+            // bottomRight: Radius.circular(20.0),
+            ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -60,7 +63,7 @@ class _CustomHearderState extends State<CustomHearder> {
             width: 50,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2(
@@ -144,9 +147,39 @@ class MenuItems {
   }
 
   static onChanged(BuildContext context, MenuItem item) {
+    logout() {
+      deletedata() async {
+        final auth = Provider.of<AuthBase>(context, listen: false);
+        auth.signOut(context);
+        auth.authStateChanges();
+      }
+
+      try {
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.confirm,
+            text: 'Do you want to logout',
+            confirmBtnText: 'Yes',
+            cancelBtnText: 'No',
+            confirmBtnColor: lightGreenColor,
+            showCancelBtn: false,
+            onCancelBtnTap: () {
+              Navigator.pop(context);
+            },
+            onConfirmBtnTap: () {
+              try {
+                deletedata();
+              } catch (e) {}
+
+              Navigator.pop(context);
+            });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
     switch (item) {
       case MenuItems.home:
-        //Do something
         break;
       case MenuItems.settings:
         //Do something
@@ -155,8 +188,7 @@ class MenuItems {
         //Do something
         break;
       case MenuItems.logout:
-        final auth = Provider.of<AuthBase>(context, listen: false);
-        auth.signOut();
+        logout();
         break;
     }
   }

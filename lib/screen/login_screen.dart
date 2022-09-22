@@ -1,13 +1,17 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/custom_button.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:timetracker/custom/show_exception_alert_dialog.dart';
 import 'package:timetracker/landing_page.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 
@@ -37,12 +41,16 @@ class _LoginPageState extends State<LoginPage> {
   String get _password => _passwordController.text;
   String get _username => _passwordController.text;
 
-  final _formKey = GlobalKey<FormState>();
-
   bool _ispasswordfilled = true;
   bool _isemailfilled = true;
   bool _isusernamefilled = true;
   bool _isregisteron = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void login() async {
     final auth = Provider.of<AuthBase>(context, listen: false);
     try {
@@ -52,10 +60,19 @@ class _LoginPageState extends State<LoginPage> {
       await auth.signInWithEmailAndPassword(_email, _password);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
+        MaterialPageRoute(builder: (context) => const LandingPage()),
       );
-    } catch (e) {
-      print(e.toString());
+    } on FirebaseAuthException catch (e) {
+      QuickAlert.show(
+        confirmBtnColor: redColor,
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Oops...',
+        text: firebaseExceptionmessage(e),
+        backgroundColor: white,
+        titleColor: redColor,
+        textColor: redColor,
+      );
     }
   }
 
@@ -69,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
+        MaterialPageRoute(builder: (context) => const LandingPage()),
       ); //pop for go back
 
     } catch (e) {
@@ -82,9 +99,11 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await auth.signInAnonymously();
+      final user = FirebaseAuth.instance.currentUser!.uid;
+      print("Sign in $user as Anon");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
+        MaterialPageRoute(builder: (context) => const LandingPage()),
       ); //pop for go back
     } catch (e) {
       print(e.toString());
@@ -96,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
@@ -104,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
             center: const Alignment(-1.5, -1), // near the top right
             radius: 1.8,
             colors: [
-              Color(0xFF00EC97),
+              const Color(0xFF00EC97),
               greenColor,
             ],
           )),
@@ -114,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset("assets/img/logo.png"),
@@ -138,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   _isregisteron
@@ -152,13 +171,13 @@ class _LoginPageState extends State<LoginPage> {
                             "Username"
                           ],
                           false)
-                      : SizedBox(),
-                  SizedBox(
+                      : const SizedBox(),
+                  const SizedBox(
                     height: 10,
                   ),
                   textInput(_emailController, _emailFocusNode, _isemailfilled,
                       ["Enter your Email", "Email Required", "Email"], false),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   textInput(
@@ -168,11 +187,11 @@ class _LoginPageState extends State<LoginPage> {
                     ["Enter your Password", "Password Required", "Password"],
                     true,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   _isregisteron
-                      ? SizedBox(
+                      ? const SizedBox(
                           height: 12.5,
                         )
                       : googleandanologin(),
@@ -193,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   CustomElebutton(
                     bcolor: white,
-                    bcolor2: Color(0xFFC9FFEC),
+                    bcolor2: const Color(0xFFC9FFEC),
                     color: white,
                     fontSize: 9.w,
                     fontcolor: Colors.black,
@@ -235,7 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                 ],

@@ -1,19 +1,16 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, avoid_print, must_be_immutable, non_constant_identifier_names
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:timetracker/custom/alert_all.dart';
 import 'package:timetracker/custom/custom_button.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracker/custom/header.dart';
-import 'package:timetracker/screen/target_screen_stream.dart';
-import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
 import 'package:timetracker/service/model/data_model.dart';
 
@@ -23,7 +20,7 @@ var datetimeformatted = datetimeformatter.format(DateTime.now());
 
 class TargetScreen extends StatefulWidget {
   TargetScreen({Key? key, required this.readdata}) : super(key: key);
-  writeTime readdata;
+  WriteTime readdata;
 
   @override
   State<TargetScreen> createState() => _TargetScreenState();
@@ -31,31 +28,39 @@ class TargetScreen extends StatefulWidget {
 
 int _hourNumberPic = 0;
 int _minNumberPic = 0;
+bool _istargetcomp = false;
+Color pcolor = white;
 
-Future<void> writeData(BuildContext context, writeTime readdata) async {
-  int _newctimemin = _minNumberPic + readdata.cmin;
-  int _newctimehour = _hourNumberPic + readdata.chour;
-  var datetimenow = DateTime.now();
+
+Future<void> writeData(BuildContext context, WriteTime readdata) async {
+  int newctimemin = _minNumberPic + readdata.cmin;
+  int newctimehour = _hourNumberPic + readdata.chour;
   var datetimeformatter = DateFormat('yyyyMMdd');
   var datetimeformatted = datetimeformatter.format(DateTime.now());
+  var lastupdateformatter = DateFormat('hh:mm:ss a');
+  var lastupdateformatted = lastupdateformatter.format(DateTime.now());
   final database = Provider.of<Database>(context, listen: false);
   //! Use provider to connect with Database Class in service/database.dart
-  if ((_minNumberPic + readdata.tmin) >= 60) {
-    _newctimemin = _newctimemin - 60;
-    _newctimehour = _newctimehour + 1;
+  final _finaltime = _minNumberPic + readdata.cmin;
+  if ((_finaltime) >= 60) {
+    newctimemin = newctimemin - 60;
+    newctimehour = newctimehour + 1;
   }
-  print("Add Time = ");
   try {
     //! input -> wDataModel (Fro map) -> database -> writeData
+    print(
+        "Add ${newctimehour}.${newctimemin} to Target ${readdata.thour}.${readdata.tmin} && ");
     await database.writeData(
       datetimeformatted,
       //! for create path
-      writeTime(
+      WriteTime(
           docid: datetimeformatted,
-          chour: _newctimehour,
-          cmin: _newctimemin,
+          chour: newctimehour,
+          cmin: newctimemin,
           thour: readdata.thour,
-          tmin: readdata.tmin), //! Send input data to wDataModel  to Map
+          tmin: readdata.tmin,
+          lastupdate:
+              lastupdateformatted), //! Send input data to wDataModel  to Map
     );
   } catch (e) {
     print(e.toString());
@@ -66,7 +71,7 @@ class _TargetScreenState extends State<TargetScreen>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    writeTime readdata = widget.readdata;
+    WriteTime readdata = widget.readdata;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -77,24 +82,24 @@ class _TargetScreenState extends State<TargetScreen>
             center: const Alignment(-1, -1), // near the top right
             radius: 2,
             colors: [
-              Color(0xFF47985D),
+              const Color(0xFF47985D),
               greenColor,
             ],
           )),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CustomHearder(),
-              SizedBox(
-                height: 10,
+              const CustomHearder(),
+              const SizedBox(
+                height: 5,
               ),
               DateRound(),
-              SizedBox(
-                height: 10,
+              const SizedBox(
+                height: 5,
               ),
-              WhiteBox(),
-              SizedBox(
-                height: 10,
+              whiteBox(),
+              const SizedBox(
+                height: 5,
               ),
               CustomElebutton(
                 bcolor: white,
@@ -106,9 +111,8 @@ class _TargetScreenState extends State<TargetScreen>
                 width: 50.w,
                 height: 8.h,
                 onPressed: () {
-                  print("Data Saved");
-
                   writeData(context, readdata);
+                  print("Data Saved");
                   _hourNumberPic = 0;
                   _minNumberPic = 0;
                   setState(() {});
@@ -121,8 +125,8 @@ class _TargetScreenState extends State<TargetScreen>
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
+              const SizedBox(
+                height: 70,
               ),
             ],
           ),
@@ -132,10 +136,9 @@ class _TargetScreenState extends State<TargetScreen>
   }
 
   Container DateRound() {
-    writeTime readdata = widget.readdata;
+    WriteTime readdata = widget.readdata;
     final pval = (readdata.thour + ((readdata.tmin) / 100)).toStringAsFixed(2);
-    Color pcolor = selectpcolor();
-    print(pval);
+    pcolor = selectpcolor();
     return Container(
         //! Date
         width: 38.w,
@@ -169,8 +172,8 @@ class _TargetScreenState extends State<TargetScreen>
         ));
   }
 
-  Stack WhiteBox() {
-    writeTime readdata = widget.readdata;
+  Stack whiteBox() {
+    WriteTime readdata = widget.readdata;
     final pval = (readdata.chour + ((readdata.cmin) / 100)).toStringAsFixed(2);
 
     return Stack(
@@ -180,7 +183,7 @@ class _TargetScreenState extends State<TargetScreen>
           height: 50.h,
           decoration: BoxDecoration(
             color: white,
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(30.0),
             ),
           ),
@@ -199,16 +202,16 @@ class _TargetScreenState extends State<TargetScreen>
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
-                width: 70.w,
-                // height: 25.h,
-                padding: EdgeInsets.all(15),
+                width: 73.w,
+                height: 250,
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   color: lightGreenColor,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(30.0),
                   ),
                 ),
@@ -284,7 +287,7 @@ class _TargetScreenState extends State<TargetScreen>
                             infiniteLoop: true,
                             value: _minNumberPic,
                             minValue: 0,
-                            maxValue: 60,
+                            maxValue: 59,
                             onChanged: (value) =>
                                 setState(() => _minNumberPic = value),
                           ),
@@ -293,16 +296,42 @@ class _TargetScreenState extends State<TargetScreen>
                     ),
                   ],
                 ),
-              )
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Last Update ",
+                    style: GoogleFonts.workSans(
+                      textStyle: TextStyle(
+                          color: lightGreenColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Text(
+                    readdata.lastupdate,
+                    style: GoogleFonts.workSans(
+                      textStyle: TextStyle(
+                          color: lightGreenColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         Container(
           width: 90.w,
-          height: 9.h,
+          height: 8.h,
           decoration: BoxDecoration(
             color: lightGreenColor,
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(30.0),
             ),
           ),
@@ -311,37 +340,43 @@ class _TargetScreenState extends State<TargetScreen>
           top: 5,
           child: Container(
             width: 90.w,
-            height: 10.h,
-            decoration: BoxDecoration(
+            height: 9.h,
+            decoration: const BoxDecoration(
               color: Color.fromARGB(255, 238, 238, 238),
               borderRadius: BorderRadius.all(
                 Radius.circular(30.0),
               ),
             ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "For Now",
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          color: lightGreenColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "For Now",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: lightGreenColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Text(
-                    " $pval h",
-                    style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          color: lightGreenColor,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
+                    Text(
+                      readdata.cmin >= 10
+                          ? " ${readdata.chour}.${readdata.cmin} h"
+                          : " ${readdata.chour}.0${readdata.cmin} h",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: pcolor,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -350,30 +385,30 @@ class _TargetScreenState extends State<TargetScreen>
   }
 
   Color selectpcolor() {
-    writeTime readdata = widget.readdata;
-    final ptval = (readdata.thour + ((readdata.tmin) / 100));
-    final pcval = (readdata.chour + ((readdata.cmin) / 100));
-    double balance = pcval / ptval * 100;
-    print("$pcval / $ptval = $balance");
-    if (balance >= 100.0) {
+    WriteTime readdata = widget.readdata;
+    final ptval = (widget.readdata.thour + ((widget.readdata.tmin) / 100));
+    final pcval = (widget.readdata.chour + ((widget.readdata.cmin) / 100));
+    double targetbalance = pcval / ptval * 100;
+    if (targetbalance >= 100.0) {
       return Colors.amber;
-    } else if (balance >= 80.0) {
+    } else if (targetbalance >= 80.0) {
       return Colors.blue;
-    } else if (balance >= 50.0) {
+    } else if (targetbalance >= 50.0) {
       return lightGreenColor;
-    } else if (balance >= 30.0) {
+    } else if (targetbalance >= 30.0) {
       return Colors.orange;
-    } else if (balance <= 30.0) {
+    } else if (targetbalance <= 30.0) {
       return redColor;
     }
     return redColor;
   }
 
   double selectpval() {
-    writeTime readdata = widget.readdata;
+    WriteTime readdata = widget.readdata;
     final ptval = (readdata.thour + ((readdata.tmin) / 100));
     final pcval = (readdata.chour + ((readdata.cmin) / 100));
     double balance = pcval / ptval;
+    if (balance >= 100 && !_istargetcomp) {}
     return balance;
   }
 }

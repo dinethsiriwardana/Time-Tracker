@@ -1,19 +1,18 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/custom_button.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracker/custom/header.dart';
-import 'package:timetracker/screen/target_screen.dart';
 import 'package:timetracker/screen/target_screen_stream.dart';
-import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
 import 'package:timetracker/service/model/data_model.dart';
 
@@ -32,9 +31,11 @@ int _hourNumberPic = 1;
 int _minNumberPic = 0;
 
 Future<void> writeData(BuildContext context) async {
-  var datetimenow = DateTime.now();
   var datetimeformatter = DateFormat('yyyyMMdd');
   var datetimeformatted = datetimeformatter.format(DateTime.now());
+  var lastupdateformatter = DateFormat('hh:mm:ss a');
+  var lastupdateformatted = lastupdateformatter.format(DateTime.now());
+  print(lastupdateformatted);
   final database = Provider.of<Database>(context, listen: false);
   // datetimeformatted = '20220908';
   //! Use provider to connect with Database Class in service/database.dart
@@ -43,17 +44,31 @@ Future<void> writeData(BuildContext context) async {
     await database.writeData(
       datetimeformatted,
       //! for create path
-      writeTime(
+      WriteTime(
           docid: datetimeformatted,
           thour: _hourNumberPic,
           tmin: _minNumberPic,
           chour: 0,
-          cmin: 0), //! Send input data to wDataModel  to Map
+          cmin: 0,
+          lastupdate:
+              lastupdateformatted), //! Send input data to wDataModel  to Map
     );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => TargetScreenStream()),
-    );
+    QuickAlert.show(
+        confirmBtnColor: lightGreenColor,
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Yesss...',
+        text: "Target is setup successfully",
+        backgroundColor: white,
+        titleColor: lightGreenColor,
+        textColor: lightGreenColor,
+        confirmBtnText: "Start",
+        onConfirmBtnTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TargetScreenStream()),
+          );
+        });
   } catch (e) {
     print(e.toString());
   }
@@ -72,17 +87,17 @@ class _HomePageState extends State<HomePage> {
             center: const Alignment(-1, -1), // near the top right
             radius: 2,
             colors: [
-              Color(0xFF47985D),
+              const Color(0xFF47985D),
               greenColor,
             ],
           )),
           child: Column(
             children: [
-              CustomHearder(),
+              const CustomHearder(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   CustomIconbutton(
@@ -101,13 +116,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       height: 50,
-                      icon: FaIcon(FontAwesomeIcons.arrowRight,
+                      icon: const FaIcon(FontAwesomeIcons.arrowRight,
                           size: 20, color: Colors.black),
                       onPressed: () {
                         writeData(context);
                         print("Data Saved");
                       }),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -161,10 +176,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        WhiteBox(),
+                        whiteBox(),
                         Positioned(
                           top: 28.w,
-                          child: DateRound(),
+                          child: dateRound(),
                         ),
                       ],
                     ),
@@ -178,7 +193,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container DateRound() {
+  Container dateRound() {
     return Container(
       //! Date
       width: 33.w,
@@ -200,22 +215,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Positioned WhiteBox() {
+  Positioned whiteBox() {
     return Positioned(
       top: 45.w,
       child: Container(
         width: 90.w,
-        height: 50.h,
+        height: 48.h,
         decoration: BoxDecoration(
           color: white,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(50.0),
           ),
         ),
         child: Column(
           children: [
             SizedBox(
-              height: 25.w,
+              height: 20.w,
             ),
             Text(
               "Select Today’s Target",
@@ -227,16 +242,16 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
-              height: 25,
+            const SizedBox(
+              height: 17,
             ),
             Container(
               width: 70.w,
-              // height: 25.h,
-              padding: EdgeInsets.all(15),
+              height: 28.h,
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color: lightGreenColor,
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(50.0),
                 ),
               ),
