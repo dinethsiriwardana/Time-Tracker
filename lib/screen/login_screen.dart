@@ -297,12 +297,12 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(
           width: 40.w,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: FaIcon(FontAwesomeIcons.google, size: 10.w, color: white),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: FaIcon(FontAwesomeIcons.google, size: 10.w, color: white),
+              // ),
               IconButton(
                 onPressed: () {
                   signInAnonymously();

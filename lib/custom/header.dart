@@ -125,7 +125,7 @@ class MenuItems {
   static const List<MenuItem> secondItems = [logout];
 
   static const home = MenuItem(text: 'Home', icon: Icons.home);
-  static const share = MenuItem(text: 'Share', icon: Icons.share);
+  static const share = MenuItem(text: 'Log', icon: Icons.receipt_long);
   static const settings = MenuItem(text: 'Settings', icon: Icons.settings);
   static const logout = MenuItem(text: 'Log Out', icon: Icons.logout);
 

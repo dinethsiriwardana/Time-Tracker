@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:lottie/lottie.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -30,7 +31,8 @@ int _hourNumberPic = 0;
 int _minNumberPic = 0;
 bool _istargetcomp = false;
 Color pcolor = white;
-
+late double targetbalance;
+late AnimationController lottieController;
 
 Future<void> writeData(BuildContext context, WriteTime readdata) async {
   int newctimemin = _minNumberPic + readdata.cmin;
@@ -69,6 +71,34 @@ Future<void> writeData(BuildContext context, WriteTime readdata) async {
 
 class _TargetScreenState extends State<TargetScreen>
     with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+
+    lottieController = AnimationController(
+      vsync: this,
+    );
+    lottieController.addStatusListener((status) {
+      int cont = 0;
+      Future.delayed(Duration(seconds: 5), () {
+        // Do something
+        if (status == AnimationStatus.completed) {
+          cont++;
+          if (cont < 5) {
+            lottieController.reset();
+            lottieController.forward();
+          }
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    lottieController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     WriteTime readdata = widget.readdata;
@@ -135,41 +165,68 @@ class _TargetScreenState extends State<TargetScreen>
     );
   }
 
-  Container DateRound() {
+  SizedBox DateRound() {
     WriteTime readdata = widget.readdata;
-    final pval = (readdata.thour + ((readdata.tmin) / 100)).toStringAsFixed(2);
+    final pval = (readdata.thour + ((readdata.tmin) / 100));
     pcolor = selectpcolor();
-    return Container(
-        //! Date
-        width: 38.w,
-        height: 38.w,
-        decoration: BoxDecoration(
-          color: lightGreenColor,
-          shape: BoxShape.circle,
-        ),
-        child: LiquidCircularProgressIndicator(
-          value: selectpval(), // Defaults to 0.5.
-          valueColor: AlwaysStoppedAnimation(
-            pcolor,
-          ),
-          backgroundColor: darkBlueColor,
-          borderColor: white,
-          borderWidth: 7.0,
-          direction: Axis.vertical,
-          center: Center(
-            child: Text(
-              "Target\n$pval h",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.workSans(
-                textStyle: TextStyle(
-                  color: white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+
+    return SizedBox(
+      width: 100.h,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+              //! Date
+              width: 38.w,
+              height: 38.w,
+              decoration: BoxDecoration(
+                color: lightGreenColor,
+                shape: BoxShape.circle,
               ),
-            ),
-          ),
-        ));
+              child: LiquidCircularProgressIndicator(
+                value: selectpval(), // Defaults to 0.5.
+                valueColor: AlwaysStoppedAnimation(
+                  pcolor,
+                ),
+                backgroundColor: darkBlueColor,
+                borderColor: white,
+                borderWidth: 7.0,
+                direction: Axis.vertical,
+                center: Center(
+                  child: Text(
+                    "Target\n$pval h",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.workSans(
+                      textStyle: TextStyle(
+                        color: white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              )),
+          targetbalance >= 100
+              ? Lottie.network(
+                  'https://assets7.lottiefiles.com/packages/lf20_obhph3sh.json',
+                  width: 38.w,
+                  height: 38.w,
+                  controller: lottieController,
+                  //
+                  onLoaded: (composition) {
+                    lottieController.duration = Duration(seconds: 5);
+                    // lottieController.repeat(
+                    //   period: Duration(seconds: 10),
+                    // );
+                    lottieController.forward();
+                  },
+                  //
+                  // repeat: true,
+                )
+              : Container(),
+        ],
+      ),
+    );
   }
 
   Stack whiteBox() {
@@ -388,7 +445,7 @@ class _TargetScreenState extends State<TargetScreen>
     WriteTime readdata = widget.readdata;
     final ptval = (widget.readdata.thour + ((widget.readdata.tmin) / 100));
     final pcval = (widget.readdata.chour + ((widget.readdata.cmin) / 100));
-    double targetbalance = pcval / ptval * 100;
+    targetbalance = pcval / ptval * 100;
     if (targetbalance >= 100.0) {
       return Colors.amber;
     } else if (targetbalance >= 80.0) {
@@ -408,7 +465,7 @@ class _TargetScreenState extends State<TargetScreen>
     final ptval = (readdata.thour + ((readdata.tmin) / 100));
     final pcval = (readdata.chour + ((readdata.cmin) / 100));
     double balance = pcval / ptval;
-    if (balance >= 100 && !_istargetcomp) {}
+    // if (balance >= 100 && !_istargetcomp) {}
     return balance;
   }
 }
