@@ -12,7 +12,7 @@ import 'package:timetracker/custom/custom_button.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracker/custom/header.dart';
-import 'package:timetracker/screen/target_screen_stream.dart';
+import 'package:timetracker/screen/target_screen/target_screen_stream.dart';
 import 'package:timetracker/service/firebase/database.dart';
 import 'package:timetracker/service/model/data_model.dart';
 

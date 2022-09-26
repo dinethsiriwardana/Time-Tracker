@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timetracker/screen/loading_screen.dart';
 import 'package:timetracker/screen/login_screen.dart';
-import 'package:timetracker/screen/target_screen_stream.dart';
+import 'package:timetracker/screen/target_screen/target_screen_stream.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
 
