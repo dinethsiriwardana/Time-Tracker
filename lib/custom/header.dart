@@ -8,19 +8,27 @@ import 'package:quickalert/quickalert.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/customcolor.dart';
+import 'package:timetracker/landing_page.dart';
+import 'package:timetracker/screen/home_screen.dart';
+import 'package:timetracker/screen/show_log/log_screen.dart';
+import 'package:timetracker/screen/show_log/log_stream.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
 
 class CustomHearder extends StatefulWidget {
-  const CustomHearder({Key? key}) : super(key: key);
-
+  CustomHearder({Key? key, required this.hloc}) : super(key: key);
+  String hloc;
   @override
   State<CustomHearder> createState() => _CustomHearderState();
 }
 
 class _CustomHearderState extends State<CustomHearder> {
+  void test() {}
   @override
   Widget build(BuildContext context) {
+    bool isbool = true;
+    void test1() {}
+
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       height: 100,
@@ -121,11 +129,11 @@ class MenuItem {
 }
 
 class MenuItems {
-  static const List<MenuItem> firstItems = [home, share, settings];
+  static const List<MenuItem> firstItems = [home, log, settings];
   static const List<MenuItem> secondItems = [logout];
 
   static const home = MenuItem(text: 'Home', icon: Icons.home);
-  static const share = MenuItem(text: 'Log', icon: Icons.receipt_long);
+  static const log = MenuItem(text: 'Log', icon: Icons.receipt_long);
   static const settings = MenuItem(text: 'Settings', icon: Icons.settings);
   static const logout = MenuItem(text: 'Log Out', icon: Icons.logout);
 
@@ -155,39 +163,49 @@ class MenuItems {
       }
 
       try {
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.confirm,
-            text: 'Do you want to logout',
-            confirmBtnText: 'Yes',
-            cancelBtnText: 'No',
-            confirmBtnColor: lightGreenColor,
-            showCancelBtn: false,
-            onCancelBtnTap: () {
-              Navigator.pop(context);
-            },
-            onConfirmBtnTap: () {
-              try {
-                deletedata();
-              } catch (e) {}
-
-              Navigator.pop(context);
-            });
+        // QuickAlert.show(
+        //     context: context,
+        //     type: QuickAlertType.success,
+        //     title: 'Do you want to logout',
+        //     text: 'This Box will closed within 5 sec',
+        //     confirmBtnText: 'Yes',
+        //     confirmBtnColor: lightGreenColor,
+        //     showCancelBtn: false,
+        //     onConfirmBtnTap: () {
+        //       // Navigator.pop(context);
+        //       Future.delayed(Duration(seconds: 5), () {
+        deletedata();
+        //         // Do something
+        //       });
+        //     },
+        //     autoCloseDuration: Duration(seconds: 5));
       } catch (e) {
         print(e.toString());
       }
     }
 
+    gotoLog() {}
+
     switch (item) {
       case MenuItems.home:
+        Navigator.pop(context);
+
         break;
       case MenuItems.settings:
-        //Do something
         break;
-      case MenuItems.share:
-        //Do something
+      case MenuItems.log:
+        // return MaterialApp(
+        //   home: LogScreen(),
+        //   debugShowCheckedModeBanner: false,
+        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LogScreen()),
+        );
         break;
       case MenuItems.logout:
+        // Navigator.pop(context);
+
         logout();
         break;
     }

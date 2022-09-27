@@ -119,7 +119,9 @@ class _TargetScreenState extends State<TargetScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const CustomHearder(),
+              CustomHearder(
+                hloc: 'TargetScreen',
+              ),
               const SizedBox(
                 height: 5,
               ),

@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timetracker/screen/loading_screen.dart';
+import 'package:timetracker/custom/readonetime.dart';
+import 'package:timetracker/screen/loading_screens/loading_screen.dart';
 import 'package:timetracker/screen/login_screen.dart';
+import 'package:timetracker/screen/show_log/log_screen.dart';
+import 'package:timetracker/screen/show_log/log_stream.dart';
 import 'package:timetracker/screen/target_screen/target_screen_stream.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
@@ -26,10 +29,16 @@ class LandingPage extends StatelessWidget {
             //if no user logged
             return const LoginPage();
           }
-          // print(user.uid);
+          // print(user.uid.runtimeType);
+          // final a = user.uid;
           return Provider<Database>(
             create: (_) => FirestoreDatabase(user: user.uid),
-            child: TargetScreenStream(),
+            child: const MaterialApp(
+              home: TargetScreenStream(),
+              debugShowCheckedModeBanner: false,
+            ),
+            // child: ReadOneTime()
+            // child: LogScreen(),
           );
         }
         return const LoadingScreen(

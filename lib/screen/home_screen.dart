@@ -53,22 +53,6 @@ Future<void> writeData(BuildContext context) async {
           lastupdate:
               lastupdateformatted), //! Send input data to wDataModel  to Map
     );
-    QuickAlert.show(
-        confirmBtnColor: lightGreenColor,
-        context: context,
-        type: QuickAlertType.success,
-        title: 'Yesss...',
-        text: "Target is setup successfully",
-        backgroundColor: white,
-        titleColor: lightGreenColor,
-        textColor: lightGreenColor,
-        confirmBtnText: "Start",
-        onConfirmBtnTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TargetScreenStream()),
-          );
-        });
   } catch (e) {
     print(e.toString());
   }
@@ -93,7 +77,9 @@ class _HomePageState extends State<HomePage> {
           )),
           child: Column(
             children: [
-              const CustomHearder(),
+              CustomHearder(
+                hloc: 'HomePage',
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

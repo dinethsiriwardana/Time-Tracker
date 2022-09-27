@@ -24,7 +24,7 @@ class WriteTime {
     final int chour = data['chour'];
     final int cmin = data["cmin"];
     final String docid = data["docid"];
-    final String lastupdate = data["lastupdate"];
+    String lastupdate = data["lastupdate"];
 
     return WriteTime(
         thour: thour,

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/readonetime.dart';
 import 'package:timetracker/others/firebase_options.dart';
+import 'package:timetracker/screen/home_screen.dart';
+import 'package:timetracker/screen/show_log/log_screen.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/landing_page.dart';
 import 'package:timetracker/service/firebase/database.dart';
@@ -35,6 +37,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
+            routes: {
+              // When navigating to the "/" route, build the FirstScreen widget.
+              '/home': (context) => const HomePage(),
+              // When navigating to the "/second" route, build the SecondScreen widget.
+              '/LogScreen': (context) => LogScreen(),
+            },
             home:
                 //
                 // TargetScreenStream(),

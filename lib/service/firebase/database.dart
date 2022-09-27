@@ -8,6 +8,7 @@ import 'package:timetracker/service/model/datetimemodel.dart';
 abstract class Database {
   Future<void> writeData(String datatime, WriteTime wDataModel);
   Stream<List<WriteTime>> readDataStream();
+  Stream<List<WriteTime>> readAllDataStream(reqmonth);
   Future<void> deleteaccount();
 }
 
@@ -54,7 +55,7 @@ class FirestoreDatabase implements Database {
   Stream<List<WriteTime>> readDataStream() {
     final monthData = dateTimeNow('yyyyMMdd');
     // print("Dota is -  $monthData (Read From ReadDataStream)");
-    print("Read Data to $user in date  $monthData");
+    print("Read Data from $user in date $monthData");
     final path = APIPath.rdatapath(user);
     final reference = FirebaseFirestore.instance
         .collection(path)
@@ -63,6 +64,27 @@ class FirestoreDatabase implements Database {
 
     final snapshots = reference
         .snapshots(); //Stream<QuerySnapshot<Map<String, dynamic>>> snapshots / Stream<DocumentSnapshot<Map<String, dynamic>>>
+    return snapshots.map((snapshot) => snapshot.docs
+        .map((snapshot) => WriteTime.fromMap(snapshot.data()))
+        .toList());
+  }
+
+  @override
+  Stream<List<WriteTime>> readAllDataStream(reqmonth) {
+    String searchrangeS = reqmonth <= 9 ? "20220$reqmonth" : "2022$reqmonth";
+    String searchrangeE =
+        reqmonth + 1 <= 9 ? "20220${reqmonth + 1}" : "2022${reqmonth + 1}";
+
+    print("Read Data from $user in range $searchrangeE");
+    final path = APIPath.rdatapath(user);
+    final reference = FirebaseFirestore.instance
+        .collection(path)
+        // .orderBy('tmin')
+        .where('docid', isGreaterThanOrEqualTo: searchrangeS);
+    //
+    ;
+
+    final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.docs
         .map((snapshot) => WriteTime.fromMap(snapshot.data()))
         .toList());

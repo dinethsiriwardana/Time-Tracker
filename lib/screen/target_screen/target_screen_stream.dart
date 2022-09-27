@@ -8,7 +8,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:timetracker/custom/show_exception_alert_dialog.dart';
 import 'package:timetracker/screen/home_screen.dart';
-import 'package:timetracker/screen/loading_screen.dart';
+import 'package:timetracker/screen/loading_screens/loading_screen.dart';
 import 'package:timetracker/screen/target_screen/target_screen.dart';
 import 'package:timetracker/service/firebase/database.dart';
 import 'package:timetracker/service/model/data_model.dart';
@@ -67,9 +67,7 @@ class _TargetScreenStreamState extends State<TargetScreenStream> {
 
               if (snapshot.hasError) {
                 print("Type ${snapshot.error}");
-                // FirebaseException errexception =
-                //     snapshot.error as FirebaseException;
-                // String? errmsg = firebaseExceptionmessage(errexception);
+
                 return LoadingScreen(
                   iserror: true,
                 );
