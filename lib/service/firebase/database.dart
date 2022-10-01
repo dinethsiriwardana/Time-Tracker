@@ -80,7 +80,9 @@ class FirestoreDatabase implements Database {
     final reference = FirebaseFirestore.instance
         .collection(path)
         // .orderBy('tmin')
-        .where('docid', isGreaterThanOrEqualTo: searchrangeS);
+        .where('docid',
+            isGreaterThanOrEqualTo: searchrangeS,
+            isLessThanOrEqualTo: searchrangeE);
     //
     ;
 

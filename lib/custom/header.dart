@@ -73,46 +73,50 @@ class _CustomHearderState extends State<CustomHearder> {
               color: Colors.black.withOpacity(0.1),
               borderRadius: const BorderRadius.all(Radius.circular(12)),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2(
-                customButton: Icon(
-                  FontAwesomeIcons.userLarge,
-                  size: 25,
-                  color: white,
-                ),
-                items: [
-                  ...MenuItems.firstItems.map(
-                    (item) => DropdownMenuItem<MenuItem>(
-                      value: item,
-                      child: MenuItems.buildItem(item),
-                    ),
-                  ),
-                  // const DropdownMenuItem<Divider>(
-                  //     enabled: false, child: Divider()),
-                  ...MenuItems.secondItems.map(
-                    (item) => DropdownMenuItem<MenuItem>(
-                      value: item,
-                      child: MenuItems.buildItem(item),
-                    ),
-                  ),
-                ],
-                onChanged: (value) {
-                  MenuItems.onChanged(context, value as MenuItem);
-                },
-                itemHeight: 40,
-                itemPadding: const EdgeInsets.only(left: 16, right: 16),
-                dropdownWidth: 140,
-                dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                dropdownDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: lightGreenColor,
-                ),
-                dropdownElevation: 8,
-                offset: const Offset(-90, -10),
-              ),
-            ),
+            child: dropdown(context),
           )
         ],
+      ),
+    );
+  }
+
+  DropdownButtonHideUnderline dropdown(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        customButton: Icon(
+          FontAwesomeIcons.userLarge,
+          size: 25,
+          color: white,
+        ),
+        items: [
+          ...MenuItems.firstItems.map(
+            (item) => DropdownMenuItem<MenuItem>(
+              value: item,
+              child: MenuItems.buildItem(item),
+            ),
+          ),
+          // const DropdownMenuItem<Divider>(
+          //     enabled: false, child: Divider()),
+          ...MenuItems.secondItems.map(
+            (item) => DropdownMenuItem<MenuItem>(
+              value: item,
+              child: MenuItems.buildItem(item),
+            ),
+          ),
+        ],
+        onChanged: (value) {
+          MenuItems.onChanged(context, value as MenuItem);
+        },
+        itemHeight: 40,
+        itemPadding: const EdgeInsets.only(left: 16, right: 16),
+        dropdownWidth: 140,
+        dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+        dropdownDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: lightGreenColor,
+        ),
+        dropdownElevation: 8,
+        offset: const Offset(-90, -10),
       ),
     );
   }

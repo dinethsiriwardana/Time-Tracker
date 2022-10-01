@@ -1,25 +1,13 @@
 // ignore_for_file: avoid_print
 
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:timetracker/custom/customcolor.dart';
-import 'package:timetracker/custom/readonetime.dart';
-import 'package:timetracker/custom/show_exception_alert_dialog.dart';
 import 'package:timetracker/debugLog/debugcolor.dart';
-import 'package:timetracker/screen/home_screen.dart';
 import 'package:timetracker/screen/loading_screens/custom_loading.dart';
-import 'package:timetracker/screen/loading_screens/loading_screen.dart';
 import 'package:timetracker/screen/show_log/log_box.dart';
-import 'package:timetracker/screen/target_screen/target_screen.dart';
 import 'package:timetracker/service/firebase/database.dart';
 import 'package:timetracker/service/model/data_model.dart';
+import 'package:timetracker/service/model/datetimemodel.dart';
 
 class LogScreenStream extends StatefulWidget {
   const LogScreenStream({Key? key}) : super(key: key);
@@ -28,13 +16,17 @@ class LogScreenStream extends StatefulWidget {
   State<LogScreenStream> createState() => _LogScreenStreamState();
 }
 
+int monthData = int.parse(dateTimeNow('MM'));
+
 class _LogScreenStreamState extends State<LogScreenStream> {
   @override
   Widget build(BuildContext context) {
+    print(monthData);
     final database = Provider.of<Database>(context, listen: false);
 
     return StreamBuilder<List<WriteTime>>(
-      stream: database.readAllDataStream(9), //! Read Data (database.dart)
+      stream:
+          database.readAllDataStream(monthData), //! Read Data (database.dart)
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           //! Check connection is activer
@@ -47,19 +39,23 @@ class _LogScreenStreamState extends State<LogScreenStream> {
               int firstMapcount = 0;
               List firstthreelist = [];
               for (var index = 0; index < mounthData.length; index++) {
-                double ptval = (mounthData[index].thour +
-                    ((mounthData[index].tmin) / 100));
+                double ptval = (mounthData[index].chour +
+                    ((mounthData[index].cmin) / 100));
                 highdate[mounthData[index].docid] = ptval;
               }
+              print(highdate);
+
               var formattedMap = Map.fromEntries(highdate.entries.toList()
                 ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+              print(formattedMap);
+
               formattedMap.forEach((k, v) {
                 if (firstMapcount <= 2) {
                   firstthreelist.add(k);
                 }
                 firstMapcount++;
               });
-
+              print(firstthreelist);
               return ListView.builder(
                 controller: ScrollController(), //! just add this line
                 shrinkWrap: true, //! This shit is very important

@@ -26,25 +26,19 @@ class SingleLogBox extends StatelessWidget {
         final targetbalance = pcval / ptval * 100;
         if (targetbalance >= 100.0) {
           return Colors.amber;
-        } else if (targetbalance >= 80.0) {
-          return Colors.blue;
-        } else if (targetbalance >= 50.0) {
-          return lightGreenColor;
-        } else if (targetbalance >= 30.0) {
-          return Colors.orange;
-        } else if (targetbalance <= 30.0) {
+        } else {
           return redColor;
         }
-        return redColor;
+        // return redColor;
       }
 
       Color selectrankpcolor() {
         if (position == 1) {
           return Colors.amber;
         } else if (position == 2) {
-          return Colors.blue;
-        } else if (position == 3) {
           return lightGreenColor;
+        } else if (position == 3) {
+          return Colors.blue;
         }
         return white.withOpacity(0.3);
       }
