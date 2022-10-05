@@ -20,7 +20,6 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String appvGET = '';
     String appvrREAD = '';
-
     Future<bool> getAppV() async {
       await FirebaseFirestore.instance
           .collection('setting')
@@ -50,7 +49,7 @@ class LandingPage extends StatelessWidget {
         future: getAppV(),
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data);
+            // print(snapshot.data);
             if (snapshot.data != false) {
               return StreamBuilder<User?>(
                   //  Create stream builder

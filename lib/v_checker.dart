@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -56,11 +57,11 @@ class _versionCheckState extends State<versionCheck>
   final Uri _url = Uri.parse(
       "https://play.google.com/store/apps/details?id=com.sstudio.timetracker");
 
-  // Future<void> _launchUrl() async {
-  //   if (!await launchUrl(_url)) {
-  //     throw 'Could not launch $_url';
-  //   }
-  // }
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +79,6 @@ class _versionCheckState extends State<versionCheck>
           greenColor,
         ],
       )),
-      // child: Center(
-      //   child: Text("aaaa"),
-      // ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -115,9 +113,8 @@ class _versionCheckState extends State<versionCheck>
               text: 'Update Now',
               width: 50.w,
               height: 6.h,
-              onPressed: () {
-                // _launchUrl();
-              },
+              onPressed: () => _launchUrl(),
+              // LaunchReview.launch(androidAppId: "com.sstudio.timetracker"),
               textStyle: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Colors.black,

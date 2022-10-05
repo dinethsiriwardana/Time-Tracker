@@ -7,7 +7,8 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:timetracker/custom/show_exception_alert_dialog.dart';
-import 'package:timetracker/screen/home_screen.dart';
+import 'package:timetracker/screen/home_screen/auto_target.dart';
+import 'package:timetracker/screen/home_screen/home_screen.dart';
 import 'package:timetracker/screen/loading_screens/loading_screen.dart';
 import 'package:timetracker/screen/target_screen/target_screen.dart';
 import 'package:timetracker/service/firebase/database.dart';
@@ -55,7 +56,7 @@ class _TargetScreenStreamState extends State<TargetScreenStream> {
 
                   if (timedata.isEmpty) {
                     print("No Any Record For Today \nCreating New target");
-                    return const HomePage();
+                    return AutoTarget();
                   } else {
                     return TargetScreen(
                       readdata: timedata[0],

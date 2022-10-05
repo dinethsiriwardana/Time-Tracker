@@ -169,7 +169,6 @@ class _TargetScreenState extends State<TargetScreen>
 
   SizedBox DateRound() {
     WriteTime readdata = widget.readdata;
-    final pval = (readdata.thour + ((readdata.tmin) / 100));
     pcolor = selectpcolor();
 
     return SizedBox(
@@ -196,7 +195,9 @@ class _TargetScreenState extends State<TargetScreen>
                 direction: Axis.vertical,
                 center: Center(
                   child: Text(
-                    "Target\n$pval h",
+                    readdata.tmin <= 9
+                        ? "Target\n${(readdata.thour)}.0${(readdata.tmin)} h"
+                        : "Target\n${(readdata.thour)}.${(readdata.tmin)} h",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.workSans(
                       textStyle: TextStyle(

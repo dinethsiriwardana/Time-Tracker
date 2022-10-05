@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:timetracker/service/api_path.dart';
+import 'package:timetracker/service/firebase/api_path.dart';
 
 import 'package:timetracker/service/model/data_model.dart';
 import 'package:timetracker/service/model/datetimemodel.dart';
@@ -10,6 +10,7 @@ abstract class Database {
   Stream<List<WriteTime>> readDataStream();
   Stream<List<WriteTime>> readAllDataStream(reqmonth);
   Future<void> deleteaccount();
+  Stream<List<WriteTime>> readdataforautotarget();
 }
 
 // /data/student_details/2010/
@@ -86,6 +87,18 @@ class FirestoreDatabase implements Database {
     //
     ;
 
+    final snapshots = reference.snapshots();
+    return snapshots.map((snapshot) => snapshot.docs
+        .map((snapshot) => WriteTime.fromMap(snapshot.data()))
+        .toList());
+  }
+
+  @override
+  Stream<List<WriteTime>> readdataforautotarget() {
+    final path = APIPath.rdatapath(user);
+    final reference = FirebaseFirestore.instance
+        .collection(path)
+        .orderBy('docid', descending: true);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.docs
         .map((snapshot) => WriteTime.fromMap(snapshot.data()))

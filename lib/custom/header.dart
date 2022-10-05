@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
@@ -9,11 +11,12 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:timetracker/custom/customcolor.dart';
 import 'package:timetracker/landing_page.dart';
-import 'package:timetracker/screen/home_screen.dart';
+import 'package:timetracker/screen/home_screen/home_screen.dart';
 import 'package:timetracker/screen/show_log/log_screen.dart';
 import 'package:timetracker/screen/show_log/log_stream.dart';
 import 'package:timetracker/service/firebase/auth.dart';
 import 'package:timetracker/service/firebase/database.dart';
+import 'package:timetracker/service/get/firebase_get.dart';
 
 class CustomHearder extends StatefulWidget {
   CustomHearder({Key? key, required this.hloc}) : super(key: key);
@@ -21,6 +24,8 @@ class CustomHearder extends StatefulWidget {
   @override
   State<CustomHearder> createState() => _CustomHearderState();
 }
+
+final GetController getController = Get.put(GetController());
 
 class _CustomHearderState extends State<CustomHearder> {
   void test() {}
@@ -204,7 +209,7 @@ class MenuItems {
         // );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LogScreen()),
+          MaterialPageRoute(builder: (context) => LogScreen()),
         );
         break;
       case MenuItems.logout:

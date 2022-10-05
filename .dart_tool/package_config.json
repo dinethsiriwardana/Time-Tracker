@@ -188,6 +188,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_rating_bar",
+      "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/flutter_rating_bar-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/dineth/FlutterDev/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -204,6 +210,12 @@
       "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-10.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "get",
+      "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/get-4.6.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
     },
     {
       "name": "google_fonts",
@@ -252,6 +264,12 @@
       "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/json_annotation-4.6.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "launch_review",
+      "rootUri": "file:///Users/dineth/.pub-cache/hosted/pub.dartlang.org/launch_review-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "lints",
@@ -560,7 +578,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-10-01T04:40:04.574935Z",
+  "generated": "2022-10-05T17:13:13.702395Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }
