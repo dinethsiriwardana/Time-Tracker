@@ -19,6 +19,8 @@ class LogScreenStream extends StatefulWidget {
 }
 
 int monthData = int.parse(dateTimeNow('MM'));
+int currentYear = DateTime.now().year;
+
 final GetController getController = Get.put(GetController());
 
 class _LogScreenStreamState extends State<LogScreenStream> {
@@ -27,7 +29,8 @@ class _LogScreenStreamState extends State<LogScreenStream> {
     final database = Provider.of<Database>(context, listen: false);
 
     return StreamBuilder<List<WriteTime>>(
-      stream: database.readAllDataStream(9), //! Read Data (database.dart)
+      stream: database.readAllDataStream(
+          monthData, "2023"), //! Read Data (database.dart)
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           //! Check connection is activer

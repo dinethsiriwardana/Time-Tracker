@@ -8,7 +8,7 @@ import 'package:timetracker/service/model/datetimemodel.dart';
 abstract class Database {
   Future<void> writeData(String datatime, WriteTime wDataModel);
   Stream<List<WriteTime>> readDataStream();
-  Stream<List<WriteTime>> readAllDataStream(reqmonth);
+  Stream<List<WriteTime>> readAllDataStream(reqmonth, reqyear);
   Future<void> deleteaccount();
   Stream<List<WriteTime>> readdataforautotarget();
 }
@@ -16,6 +16,7 @@ abstract class Database {
 // /data/student_details/2010/
 class FirestoreDatabase implements Database {
   FirestoreDatabase({required this.user}) : assert(user != null);
+
   final String user;
 
   @override
@@ -71,21 +72,26 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<List<WriteTime>> readAllDataStream(reqmonth) {
-    String searchrangeS = reqmonth <= 9 ? "20220$reqmonth" : "2022$reqmonth";
-    String searchrangeE =
-        reqmonth + 1 <= 9 ? "20220${reqmonth + 1}" : "2022${reqmonth + 1}";
+  Stream<List<WriteTime>> readAllDataStream(reqmonth, reqyear) {
+    String searchrangeS =
+        reqmonth <= 9 ? "$reqyear" "0$reqmonth" : "$reqyear$reqmonth";
+    String searchrangeE = reqmonth + 1 <= 9
+        ? "$reqyear" "0${reqmonth + 1}"
+        : "$reqyear${reqmonth + 1}";
 
-    print("Read Data from $user in range $searchrangeE");
-    final path = APIPath.rdatapath(user);
+    // String searchrangeS = "202304";
+    // String searchrangeE = "202305";
+
+    print("Read Data from $user in range $searchrangeS - $searchrangeE");
+    // print("Read Data from $user in range $searchrangeE");
+    final path = APIPath.rdatapathlog(user);
     final reference = FirebaseFirestore.instance
         .collection(path)
         // .orderBy('tmin')
         .where('docid',
             isGreaterThanOrEqualTo: searchrangeS,
             isLessThanOrEqualTo: searchrangeE);
-    //
-    ;
+    // ;
 
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.docs

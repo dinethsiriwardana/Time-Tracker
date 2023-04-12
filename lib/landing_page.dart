@@ -35,7 +35,7 @@ class LandingPage extends StatelessWidget {
         }
       });
 
-      if (appvGET == appvrREAD) {
+      if (appvGET == appvrREAD || appvGET == '0.0.0') {
         return true;
       } else {
         return false;

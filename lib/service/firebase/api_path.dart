@@ -6,4 +6,5 @@ class APIPath {
   static String wdatapath(String date, String userID) =>
       '/users/$userID/$year/$date';
   static String rdatapath(String userID) => '/users/$userID/$year/';
+  static String rdatapathlog(String userID) => '/users/$userID/$year/';
 }

@@ -240,7 +240,7 @@ class _TargetScreenState extends State<TargetScreen>
       children: [
         Container(
           width: 90.w,
-          height: 50.h,
+          // height: 50.h,
           decoration: BoxDecoration(
             color: white,
             borderRadius: const BorderRadius.all(
@@ -383,6 +383,9 @@ class _TargetScreenState extends State<TargetScreen>
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ),
