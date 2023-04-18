@@ -112,16 +112,21 @@ class _CustomHearderState extends State<CustomHearder> {
         onChanged: (value) {
           MenuItems.onChanged(context, value as MenuItem);
         },
-        itemHeight: 40,
-        itemPadding: const EdgeInsets.only(left: 16, right: 16),
-        dropdownWidth: 140,
-        dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-        dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: lightGreenColor,
+        menuItemStyleData: MenuItemStyleData(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          // itemHeight: 40,
+          // customHeights:
         ),
-        dropdownElevation: 8,
-        offset: const Offset(-90, -10),
+        dropdownStyleData: DropdownStyleData(
+          width: 140,
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: lightGreenColor,
+          ),
+          elevation: 8,
+          offset: const Offset(-90, -10),
+        ),
       ),
     );
   }

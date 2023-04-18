@@ -35,11 +35,11 @@ class LandingPage extends StatelessWidget {
         }
       });
 
-      if (appvGET == appvrREAD || appvGET == '0.0.0') {
-        return true;
-      } else {
-        return false;
-      }
+      // if (appvGET == appvrREAD || appvGET == '0.0.0') {
+      return true;
+      // } else {
+      // return false;
+      // }
     }
 
     final auth = Provider.of<AuthBase>(context,

@@ -9,7 +9,7 @@ import cloud_firestore
 import firebase_auth
 import firebase_core
 import firebase_storage
-import package_info_plus_macos
+import package_info_plus
 import path_provider_foundation
 import url_launcher_macos
 
